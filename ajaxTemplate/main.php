@@ -15,6 +15,7 @@ $selectors = array();
 $callbackIng = '';
 $callbackEd = '';
 if (count($_POST) > 0) {
+  CheckIsRefererValid();
 	$selectorsPost = GetVars('selector', 'POST');
 	$callbackIng = GetVars('callback-ing', 'POST');
 	$callbackEd = GetVars('callback-ed', 'POST');
@@ -24,7 +25,8 @@ if (count($_POST) > 0) {
 	$zbp->Config('ajaxTemplate')->selectors = serialize($selectors);
 	$zbp->Config('ajaxTemplate')->callbackIng = $callbackIng;
 	$zbp->Config('ajaxTemplate')->callbackEd = $callbackEd;
-	$zbp->SaveConfig('ajaxTemplate');
+  $zbp->SaveConfig('ajaxTemplate');
+  $zbp->BuildTemplate();
 	$zbp->SetHint('good');
 	Redirect('./main.php');
 } else {
@@ -41,13 +43,13 @@ if (count($_POST) > 0) {
 		<?php echo $blogtitle;?></div>
 	<div class="SubMenu"></div>
 	<div id="divMain2">
-		<form action="?act=save" method="post">
-			<table width="100%" border="0" class="table_hover table_striped">
+		<form action="<?php echo BuildSafeURL("main.php?act=save"); ?>" method="post">
+			<table width="100%" class="table_hover table_striped">
 				<tr height="32">
-					<th colspan="2" align="center">设置</th>
+					<th colspan="2">设置</th>
 				</tr>
 				<tr height="32">
-					<td width="30%" align="left">
+					<td width="30%">
 						<p> <b>· 指定要替换的元素的选择器 <a href="#" class="a-append">[增加]</a></b>
 							<br/>
 							<span class="note">&nbsp;&nbsp;被选择器选择到的元素将被替换，请确保该元素唯一。如：<br/>&nbsp;&nbsp;body<br/>&nbsp;&nbsp;title<br/>&nbsp;&nbsp;.container</span>
