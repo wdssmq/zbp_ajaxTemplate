@@ -24,14 +24,14 @@ function ajaxTemplate_Zbp_BuildTemplate(&$templates)
   $ajax = file_get_contents($zbp->path . "zb_users/plugin/ajaxTemplate/var/ajax.js");
 
   $ajax = str_replace("-replaceSelector-", json_encode($config), $ajax);
-  $ajax = str_replace("-callbackIng-", json_encode($callbackIng), $ajax);
-  $ajax = str_replace("-callbackEd-", json_encode($callbackEd), $ajax);
+  $ajax = str_replace("-callbackIng-", $callbackIng, $ajax);
+  $ajax = str_replace("-callbackEd-", $callbackEd, $ajax);
 
   file_put_contents($zbp->path . "zb_users/plugin/ajaxTemplate/usr/ajax.js", $ajax);
 
-  $templates['footer'] = str_replace('{$footer}', '{$footer}<script src="' . $zbp->host . 'zb_users/plugin/ajaxTemplate/var/page.js"></script>', $templates['footer']);
-  $templates['footer'] = str_replace('{$footer}', '{$footer}<script src="' . $zbp->host . 'zb_users/plugin/ajaxTemplate/var/ajaxtemplate.js"></script>', $templates['footer']);
-  $templates['footer'] = str_replace('{$footer}', '{$footer}<script src="' . $zbp->host . 'zb_users/plugin/ajaxTemplate/usr/ajax.js"></script>', $templates['footer']);
+  $templates['footer'] = str_replace('{$footer}', '<script src="' . $zbp->host . 'zb_users/plugin/ajaxTemplate/var/page.min.js"></script>{$footer}', $templates['footer']);
+  $templates['footer'] = str_replace('{$footer}', '<script src="' . $zbp->host . 'zb_users/plugin/ajaxTemplate/var/ajaxtemplate.js"></script>{$footer}', $templates['footer']);
+  $templates['footer'] = str_replace('{$footer}', '<script src="' . $zbp->host . 'zb_users/plugin/ajaxTemplate/usr/ajax.js"></script>{$footer}', $templates['footer']);
 }
 
 // function ajaxTemplate_html_js_add()
@@ -56,6 +56,12 @@ function ajaxTemplate_Zbp_BuildTemplate(&$templates)
 // }
 
 function InstallPlugin_ajaxTemplate()
-{ }
+{
+  global $zbp;
+  $zbp->BuildTemplate();
+}
 function UninstallPlugin_ajaxTemplate()
-{ }
+{
+  global $zbp;
+  $zbp->BuildTemplate();
+}

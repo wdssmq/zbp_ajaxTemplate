@@ -23,8 +23,8 @@ if (count($_POST) > 0) {
 		$selectors[] = $value;
 	}
 	$zbp->Config('ajaxTemplate')->selectors = serialize($selectors);
-	$zbp->Config('ajaxTemplate')->callbackIng = $callbackIng;
-	$zbp->Config('ajaxTemplate')->callbackEd = $callbackEd;
+	$zbp->Config('ajaxTemplate')->callbackIng = trim($callbackIng);
+	$zbp->Config('ajaxTemplate')->callbackEd = trim($callbackEd);
   $zbp->SaveConfig('ajaxTemplate');
   $zbp->BuildTemplate();
 	$zbp->SetHint('good');
