@@ -1,4 +1,6 @@
-!(function(e) {
+/* eslint-disable */
+
+!(function (e) {
   if ("object" == typeof exports && "undefined" != typeof module)
     module.exports = e();
   else if ("function" == typeof define && define.amd) define([], e);
@@ -11,7 +13,7 @@
       : "undefined" != typeof self && (f = self),
       (f.page = e());
   }
-})(function() {
+})(function () {
   var define, module, exports;
   return (function e(t, n, r) {
     function s(o, u) {
@@ -26,7 +28,7 @@
         var l = (n[o] = { exports: {} });
         t[o][0].call(
           l.exports,
-          function(e) {
+          function (e) {
             var n = t[o][1][e];
             return s(n ? n : e);
           },
@@ -35,7 +37,7 @@
           e,
           t,
           n,
-          r
+          r,
         );
       }
       return n[o].exports;
@@ -46,8 +48,8 @@
   })(
     {
       1: [
-        function(require, module, exports) {
-          (function(process) {
+        function (require, module, exports) {
+          (function (process) {
             "use strict";
             var pathtoRegexp = require("path-to-regexp");
             module.exports = page;
@@ -83,11 +85,11 @@
             page.exits = [];
             page.current = "";
             page.len = 0;
-            page.base = function(path) {
+            page.base = function (path) {
               if (0 === arguments.length) return base;
               base = path;
             };
-            page.start = function(options) {
+            page.start = function (options) {
               options = options || {};
               if (running) return;
               running = true;
@@ -107,7 +109,7 @@
                   : location.pathname + location.search + location.hash;
               page.replace(url, null, true, dispatch);
             };
-            page.stop = function() {
+            page.stop = function () {
               if (!running) return;
               page.current = "";
               page.len = 0;
@@ -115,42 +117,42 @@
               document.removeEventListener(clickEvent, onclick, false);
               window.removeEventListener("popstate", onpopstate, false);
             };
-            page.show = function(path, state, dispatch, push) {
+            page.show = function (path, state, dispatch, push) {
               var ctx = new Context(path, state);
               page.current = ctx.path;
               if (false !== dispatch) page.dispatch(ctx);
               if (false !== ctx.handled && false !== push) ctx.pushState();
               return ctx;
             };
-            page.back = function(path, state) {
+            page.back = function (path, state) {
               if (page.len > 0) {
                 history.back();
                 page.len--;
               } else if (path) {
-                setTimeout(function() {
+                setTimeout(function () {
                   page.show(path, state);
                 });
               } else {
-                setTimeout(function() {
+                setTimeout(function () {
                   page.show(base, state);
                 });
               }
             };
-            page.redirect = function(from, to) {
+            page.redirect = function (from, to) {
               if ("string" === typeof from && "string" === typeof to) {
-                page(from, function(e) {
-                  setTimeout(function() {
+                page(from, function (e) {
+                  setTimeout(function () {
                     page.replace(to);
                   }, 0);
                 });
               }
               if ("string" === typeof from && "undefined" === typeof to) {
-                setTimeout(function() {
+                setTimeout(function () {
                   page.replace(from);
                 }, 0);
               }
             };
-            page.replace = function(path, state, init, dispatch) {
+            page.replace = function (path, state, init, dispatch) {
               var ctx = new Context(path, state);
               page.current = ctx.path;
               ctx.init = init;
@@ -158,7 +160,7 @@
               if (false !== dispatch) page.dispatch(ctx);
               return ctx;
             };
-            page.dispatch = function(ctx) {
+            page.dispatch = function (ctx) {
               var prev = prevContext,
                 i = 0,
                 j = 0;
@@ -196,7 +198,7 @@
               ctx.handled = false;
               location.href = ctx.canonicalPath;
             }
-            page.exit = function(path, fn) {
+            page.exit = function (path, fn) {
               if (typeof path === "function") {
                 return page.exit("*", path);
               }
@@ -227,7 +229,7 @@
                 ? decodeURLEncodedURIComponent(path.slice(i + 1))
                 : "";
               this.pathname = decodeURLEncodedURIComponent(
-                ~i ? path.slice(0, i) : path
+                ~i ? path.slice(0, i) : path,
               );
               this.params = {};
               this.hash = "";
@@ -240,23 +242,23 @@
               }
             }
             page.Context = Context;
-            Context.prototype.pushState = function() {
+            Context.prototype.pushState = function () {
               page.len++;
               history.pushState(
                 this.state,
                 this.title,
                 hashbang && this.path !== "/"
                   ? "#!" + this.path
-                  : this.canonicalPath
+                  : this.canonicalPath,
               );
             };
-            Context.prototype.save = function() {
+            Context.prototype.save = function () {
               history.replaceState(
                 this.state,
                 this.title,
                 hashbang && this.path !== "/"
                   ? "#!" + this.path
-                  : this.canonicalPath
+                  : this.canonicalPath,
               );
             };
             function Route(path, options) {
@@ -267,18 +269,18 @@
                 this.path,
                 (this.keys = []),
                 options.sensitive,
-                options.strict
+                options.strict,
               );
             }
             page.Route = Route;
-            Route.prototype.middleware = function(fn) {
+            Route.prototype.middleware = function (fn) {
               var self = this;
-              return function(ctx, next) {
+              return function (ctx, next) {
                 if (self.match(ctx.path, ctx.params)) return fn(ctx, next);
                 next();
               };
             };
-            Route.prototype.match = function(path, params) {
+            Route.prototype.match = function (path, params) {
               var keys = this.keys,
                 qsIndex = path.indexOf("?"),
                 pathname = ~qsIndex ? path.slice(0, qsIndex) : path,
@@ -296,7 +298,7 @@
               }
               return true;
             };
-            var onpopstate = (function() {
+            var onpopstate = (function () {
               var loaded = false;
               if ("undefined" === typeof window) {
                 return;
@@ -304,8 +306,8 @@
               if (document.readyState === "complete") {
                 loaded = true;
               } else {
-                window.addEventListener("load", function() {
-                  setTimeout(function() {
+                window.addEventListener("load", function () {
+                  setTimeout(function () {
                     loaded = true;
                   }, 0);
                 });
@@ -320,7 +322,7 @@
                     location.pathname + location.hash,
                     undefined,
                     undefined,
-                    false
+                    false,
                   );
                 }
               };
@@ -378,12 +380,12 @@
             page.sameOrigin = sameOrigin;
           }.call(this, require("_process")));
         },
-        { _process: 2, "path-to-regexp": 3 }
+        { _process: 2, "path-to-regexp": 3 },
       ],
       2: [
-        function(require, module, exports) {
+        function (require, module, exports) {
           var process = (module.exports = {});
-          process.nextTick = (function() {
+          process.nextTick = (function () {
             var canSetImmediate =
               typeof window !== "undefined" && window.setImmediate;
             var canMutationObserver =
@@ -393,17 +395,17 @@
               window.postMessage &&
               window.addEventListener;
             if (canSetImmediate) {
-              return function(f) {
+              return function (f) {
                 return window.setImmediate(f);
               };
             }
             var queue = [];
             if (canMutationObserver) {
               var hiddenDiv = document.createElement("div");
-              var observer = new MutationObserver(function() {
+              var observer = new MutationObserver(function () {
                 var queueList = queue.slice();
                 queue.length = 0;
-                queueList.forEach(function(fn) {
+                queueList.forEach(function (fn) {
                   fn();
                 });
               });
@@ -418,7 +420,7 @@
             if (canPost) {
               window.addEventListener(
                 "message",
-                function(ev) {
+                function (ev) {
                   var source = ev.source;
                   if (
                     (source === window || source === null) &&
@@ -431,7 +433,7 @@
                     }
                   }
                 },
-                true
+                true,
               );
               return function nextTick(fn) {
                 queue.push(fn);
@@ -454,29 +456,29 @@
           process.removeListener = noop;
           process.removeAllListeners = noop;
           process.emit = noop;
-          process.binding = function(name) {
+          process.binding = function (name) {
             throw new Error("process.binding is not supported");
           };
-          process.cwd = function() {
+          process.cwd = function () {
             return "/";
           };
-          process.chdir = function(dir) {
+          process.chdir = function (dir) {
             throw new Error("process.chdir is not supported");
           };
         },
-        {}
+        {},
       ],
       3: [
-        function(require, module, exports) {
+        function (require, module, exports) {
           var isArray = require("isarray");
           module.exports = pathToRegexp;
           var PATH_REGEXP = new RegExp(
             [
               "(\\\\.)",
               "([\\/.])?(?:\\:(\\w+)(?:\\(((?:\\\\.|[^)])*)\\))?|\\(((?:\\\\.|[^)])*)\\))([+*?])?",
-              "([.+*?=^!:${}()[\\]|\\/])"
+              "([.+*?=^!:${}()[\\]|\\/])",
             ].join("|"),
-            "g"
+            "g",
           );
           function escapeGroup(group) {
             return group.replace(/([=!:$\/()])/g, "\\$1");
@@ -496,7 +498,7 @@
                   name: i,
                   delimiter: null,
                   optional: false,
-                  repeat: false
+                  repeat: false,
                 });
               }
             }
@@ -509,7 +511,7 @@
             }
             var regexp = new RegExp(
               "(?:" + parts.join("|") + ")",
-              flags(options)
+              flags(options),
             );
             return attachKeys(regexp, keys);
           }
@@ -523,7 +525,7 @@
               capture,
               group,
               suffix,
-              escape
+              escape,
             ) {
               if (escaped) {
                 return escaped;
@@ -537,11 +539,11 @@
                 name: key || index++,
                 delimiter: prefix || "/",
                 optional: optional,
-                repeat: repeat
+                repeat: repeat,
               });
               prefix = prefix ? "\\" + prefix : "";
               capture = escapeGroup(
-                capture || group || "[^" + (prefix || "\\/") + "]+?"
+                capture || group || "[^" + (prefix || "\\/") + "]+?",
               );
               if (repeat) {
                 capture = capture + "(?:" + prefix + capture + ")*";
@@ -583,20 +585,20 @@
             return attachKeys(new RegExp("^" + route, flags(options)), keys);
           }
         },
-        { isarray: 4 }
+        { isarray: 4 },
       ],
       4: [
-        function(require, module, exports) {
+        function (require, module, exports) {
           module.exports =
             Array.isArray ||
-            function(arr) {
+            function (arr) {
               return Object.prototype.toString.call(arr) == "[object Array]";
             };
         },
-        {}
-      ]
+        {},
+      ],
     },
     {},
-    [1]
+    [1],
   )(1);
 });
