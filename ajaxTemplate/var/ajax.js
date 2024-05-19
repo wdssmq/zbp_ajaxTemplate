@@ -1,10 +1,10 @@
-$(function () {
+$(function() {
   $.ajaxTemplate(
     { host: "/", replaceSelector: "-replaceSelector-" },
-    function (pageObject) {
+    function(pageObject) {
       // -callbackIng-
     },
-    function (pageObject, xhrData) {
+    function(pageObject, xhrData) {
       // -callbackEd-
     },
   );

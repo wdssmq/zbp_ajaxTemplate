@@ -1,12 +1,12 @@
 /* global page */
 
-(function ($) {
-  $("[href*='zb_system'],[href='javascipt:;']").each(function () {
+(function($) {
+  $("[href*='zb_system'],[href='javascipt:;']").each(function() {
     $(this).attr("rel", "external");
   });
 
   // 刷新CSS
-  let addLinks = function (elDoc) {
+  let addLinks = function(elDoc) {
     const head = document.getElementsByTagName("head")[0];
     let elLinks = elDoc.getElementsByTagName("link");
     let nLinks = [];
@@ -44,7 +44,7 @@
       return false;
     }
     page.base(options.host);
-    page("*", function (pageObject) {
+    page("*", function(pageObject) {
       // console.log(pageObject);
       // console.log(location);
 
@@ -54,13 +54,13 @@
         // }
 
         callbacking(pageObject);
-        $.get(pageObject.canonicalPath, function (data) {
+        $.get(pageObject.canonicalPath, function(data) {
           let domParser = new DOMParser();
           let $parsed = $(domParser.parseFromString(data, "text/html"));
 
           // console.log($parsed);
 
-          $.each(options.replaceSelector, function (index, value) {
+          $.each(options.replaceSelector, function(index, value) {
             $parsed.find(value).replaceAll(value);
           });
 
@@ -74,7 +74,7 @@
             },
             500,
           );
-          $("[href*='zb_system'],[href='javascipt:;']").each(function () {
+          $("[href*='zb_system'],[href='javascipt:;']").each(function() {
             $(this).attr("rel", "external");
           });
           callbacked(pageObject, data);
@@ -89,7 +89,7 @@
   /**
    * ajaxTemplate
    */
-  $.ajaxTemplate = $.fn.ajaxTemplate = function () {
+  $.ajaxTemplate = $.fn.ajaxTemplate = function() {
     var optionsByUser = {};
     var callbacking = null;
     var callbacked = null;
